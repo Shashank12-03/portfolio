@@ -12,7 +12,7 @@ def portfolio_2(request):
     return render(request,'portfolio-details2.html')
 
 def download_pdf(request):
-    filename = 'D:\shashank\documents\Shashank_Joshi_resume.pdf'
+    filename = 'D:\shashank\WebDev\Learning\Jango\Portfolio\Static\media\Shashank_Joshi_resume.pdf'
     # Open the file in binary mode
     with open(filename, 'rb') as file:
         content = FileWrapper(file)
