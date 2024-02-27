@@ -13,7 +13,6 @@ def portfolio_2(request):
 
 def download_pdf(request):
     filename = 'D:\shashank\WebDev\Learning\Jango\Portfolio\Static\media\Shashank_Joshi_resume.pdf'
-    # Open the file in binary mode
     with open(filename, 'rb') as file:
         content = FileWrapper(file)
         response = HttpResponse(content, content_type='application/pdf')
