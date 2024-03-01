@@ -16,8 +16,8 @@ def portfolio_2(request):
 def view_pdf(request):
     file_path = os.path.join(settings.BASE_DIR, 'static', 'media', 'Shashank_Joshi_resume.pdf')
     with open(file_path, 'rb') as pdf:
-        response = HttpResponse(pdf.read(), mimetype='application/pdf')
-        response['Content-Disposition'] = 'inline;filename=Shashank_Joshi_resume.pdf'
+        response = HttpResponse(pdf.read(), content_type='application/pdf')  # Use content_type instead of mimetype
+        response['Content-Disposition'] = 'inline; filename="Shashank_Joshi_resume.pdf"'  # Specify filename in quotes
         return response
     # try:
     #     return FileResponse(open('foobar.pdf', 'rb'), content_type='application/pdf')
