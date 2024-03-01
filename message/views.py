@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from wsgiref.util import FileWrapper
 from Portfolio import settings
+from django.http import FileResponse, Http404
 import os
 # Create your views here.
 def show(request):
@@ -12,11 +13,13 @@ def portfolio_1(request):
 def portfolio_2(request):
     return render(request,'portfolio-details2.html')
 
-def download_pdf(request):
+def view_pdf(request):
     file_path = os.path.join(settings.BASE_DIR, 'static', 'media', 'Shashank_Joshi_resume.pdf')
-    with open(file_path, 'rb') as file:
-        content = FileWrapper(file)
-        response = HttpResponse(content, content_type='application/pdf')
-        response['Content-Length'] = os.path.getsize(file_path)
-        response['Content-Disposition'] = 'attachment; filename=%s' % 'Shashank_Joshi_resume.pdf'
+    with open(file_path, 'rb') as pdf:
+        response = HttpResponse(pdf.read(), mimetype='application/pdf')
+        response['Content-Disposition'] = 'inline;filename=Shashank_Joshi_resume.pdf'
         return response
+    # try:
+    #     return FileResponse(open('foobar.pdf', 'rb'), content_type='application/pdf')
+    # except FileNotFoundError:
+    #     raise Http404()
