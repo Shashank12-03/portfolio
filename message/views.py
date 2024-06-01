@@ -3,9 +3,17 @@ from wsgiref.util import FileWrapper
 from Portfolio import settings
 from django.http import FileResponse, Http404
 import os
+import json
+import urllib
 # Create your views here.
 def show(request):
-    return render(request,'index.html')
+    url = urllib.request.urlopen('https://alfa-leetcode-api.onrender.com/Shashank_1203/solved').read()
+    data = json.loads(url)
+    leetcode_data = {
+        'solved_problem' : data['solvedProblem'] 
+    }
+    solve_problem = leetcode_data.get('solved_problem')
+    return render(request, 'index.html', {'data': solve_problem})
 
 def portfolio_1(request):
     return render(request,'portfolio-details1.html')
@@ -23,3 +31,4 @@ def view_pdf(request):
     #     return FileResponse(open('foobar.pdf', 'rb'), content_type='application/pdf')
     # except FileNotFoundError:
     #     raise Http404()
+    
