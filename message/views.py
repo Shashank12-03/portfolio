@@ -1,3 +1,4 @@
+import urllib.request
 from django.shortcuts import render
 from wsgiref.util import FileWrapper
 from Portfolio import settings
@@ -5,17 +6,17 @@ from django.http import FileResponse,HttpResponse, Http404,JsonResponse
 import os
 import json
 
-# import urllib
-import requests
+import urllib
+# import requests
 # Create your views here.
 
 def send_data(url):
     try:
         # url1 = 'https://leetcode-stats-api.herokuapp.com/Shashank_1203'
-        response = requests.get(url)
-        if response.status_code!=200:
-            print("Request failed")
-        data = response.json()
+        urls = urllib.request.urlopen(url).read()
+        data = json.loads(urls)
+        print(data)
+        # data = response.json()
         return data
     except:
         return 
