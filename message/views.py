@@ -1,19 +1,68 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from wsgiref.util import FileWrapper
 from Portfolio import settings
-from django.http import FileResponse, Http404
+from django.http import FileResponse,HttpResponse, Http404,JsonResponse
 import os
 import json
-import urllib
+
+# import urllib
+import requests
 # Create your views here.
+
+def send_data(url):
+    try:
+        # url1 = 'https://leetcode-stats-api.herokuapp.com/Shashank_1203'
+        response = requests.get(url)
+        if response.status_code!=200:
+            print("Request failed")
+        data = response.json()
+        return data
+    except:
+        return 
+
 def show(request):
-    url = urllib.request.urlopen('https://alfa-leetcode-api.onrender.com/Shashank_1203/solved').read()
-    data = json.loads(url)
+    data1 = send_data('https://leetcode-stats-api.herokuapp.com/Shashank_1203')
     leetcode_data = {
-        'solved_problem' : data['solvedProblem'] 
-    }
-    solve_problem = leetcode_data.get('solved_problem')
-    return render(request, 'index.html', {'data': solve_problem})
+            'totalSolved' : data1.get('totalSolved'),
+            'easySolved': data1.get('easySolved'), 
+            'mediumSolved': data1.get('mediumSolved'),
+            'hardSolved': data1.get('hardSolved'), 
+            'acceptanceRate': data1.get('acceptanceRate'), 
+            'ranking': data1.get('ranking'), 
+            'reputation': data1.get('reputation'),
+        }
+    # print(leetcode_data)
+    data2 = send_data("https://api.github.com/users/Shashank12-03")
+    github_data = {
+                'public_repos': data2.get('public_repos'),
+                'public_gists': data2.get('public_gists'),
+                'followers': data2.get('followers'),
+                'following': data2.get('following'),
+            }
+    # print(github_data)
+    return render(request, 'index.html',{'leetcode_data':leetcode_data,'github_data':github_data})
+
+def dashboard(request):
+    data1 = send_data('https://leetcode-stats-api.herokuapp.com/Shashank_1203')
+    leetcode_data = {
+            'totalSolved' : data1.get('totalSolved'),
+            'easySolved': data1.get('easySolved'), 
+            'mediumSolved': data1.get('mediumSolved'),
+            'hardSolved': data1.get('hardSolved'), 
+            'acceptanceRate': data1.get('acceptanceRate'), 
+            'ranking': data1.get('ranking'), 
+            'reputation': data1.get('reputation'),
+        }
+    print(leetcode_data)
+    data2 = send_data("https://api.github.com/users/Shashank12-03")
+    github_data = {
+                'public_repos': data2.get('public_repos'),
+                'public_gists': data2.get('public_gists'),
+                'followers': data2.get('followers'),
+                'following': data2.get('following'),
+            }
+    print(github_data)
+    return JsonResponse({'leetcode_data':leetcode_data,'github_data':github_data})
 
 def portfolio_1(request):
     return render(request,'portfolio-details1.html')

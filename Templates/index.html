@@ -17,7 +17,7 @@
     <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet" />
     <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet" />
     <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet" />
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Template Main CSS File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet" />
 
@@ -72,7 +72,7 @@
             <p class="hero-subtitle">
               <span
                 class="typed"
-                data-typed-items="Software Developer, Full stack developer"
+                data-typed-items="Software Developer, Backend developer"
               ></span>
             </p>
             <div class="resume">
@@ -112,7 +112,7 @@
                           </p>
                           <p>
                             <span class="title-s">Profile:</span>
-                            <span>Full stack developer</span>
+                            <span>Backend developer</span>
                           </p>
                           <p>
                             <span class="title-s">Email:</span>
@@ -248,7 +248,7 @@
                         <h4 class="title-left">About me</h4>
                       </div>
                       <p class="lead">
-                        Driven and detail-oriented Python developer with hands-on experience in building robust backend systems using Django and React. Passionate about problem-solving, I've successfully tackled over 250 LeetCode problems, honing my algorithmic skills. Committed to delivering excellence, I thrive in dynamic environments, leveraging my expertise to develop innovative solutions that drive impactful results 
+                        Driven and detail-oriented Python developer with hands-on experience in building robust backend systems using Django and React. Passionate about problem-solving, I've successfully tackled over {{leetcode_data.totalSolved}} LeetCode problems, honing my algorithmic skills. Committed to delivering excellence, I thrive in dynamic environments, leveraging my expertise to develop innovative solutions that drive impactful results 
                       </p>
                     </div>
                     <div class="about-me pt-4 pt-md-0">
@@ -293,7 +293,7 @@
         <div class="overlay-mf"></div>
         <div class="container position-relative">
           <div class="row">
-            <div class="col-sm-6 col-lg-6">
+            {% comment %} <div class="col-sm-6 col-lg-6">
               <div class="counter-box counter-box pt-4 pt-md-0">
                 <div class="counter-ico">
                   <span class="ico-circle"><i class="bi bi-check"></i></span>
@@ -301,31 +301,104 @@
                 <div class="counter-num">
                   <p
                     data-purecounter-start="0"
-                    data-purecounter-end="{{data}}"
+                    data-purecounter-end="{{leetcode_data.totalSolved}}"
                     data-purecounter-duration="1"
                     class="counter purecounter"
                   ></p>
                   <span class="counter-text">Problem solved</span>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6 col-lg-6">
-              <div class="counter-box pt-4 pt-md-0">
-                <div class="counter-ico">
-                  <span class="ico-circle"
-                    ><i class="bi bi-journal-richtext"></i
-                  ></span>
-                </div>
-                <div class="counter-num">
-                  <p
-                    data-purecounter-start="0"
-                    data-purecounter-end="12"
-                    data-purecounter-duration="1"
-                    class="counter purecounter"
-                  ></p>
-                  <span class="counter-text">Projects</span>
-                </div>
+            </div> {% endcomment %}
+            <div class="dashboard">
+              <h1 color="#000000">Problem solved</h1>
+              <div class="stats-container">
+                  <div class="stat-box">
+                      <div class="stat-title">Total Solved</div>
+                      <div class="stat-value" id="totalSolved">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{leetcode_data.totalSolved}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-title">Acceptance Rate</div>
+                      <div class="stat-value" id="acceptanceRate">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{leetcode_data.acceptanceRate}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-title">Ranking</div>
+                      <div class="stat-value" id="ranking">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{leetcode_data.ranking}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-title">Reputation</div>
+                      <div class="stat-value" id="reputation">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{leetcode_data.reputation}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  <canvas id="problemsChart1" width="20" height="20"></canvas>
               </div>
+            </div>
+            <div class="dashboard">
+              <h1 color="#000000">Projects</h1>
+              <div class="stats-container">
+                  <div class="stat-box">
+                      <div class="stat-title">Repository</div>
+                      <div class="stat-value" id="totalSolved">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{github_data.public_repos}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-title">Public list</div>
+                      <div class="stat-value" id="acceptanceRate">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{github_data.public_gists}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  <div class="stat-box">
+                      <div class="stat-title">Followers</div>
+                      <div class="stat-value" id="ranking">
+                        <p
+                          data-purecounter-start="0"
+                          data-purecounter-end="{{github_data.followers}}"
+                          data-purecounter-duration="1"
+                          class="counter purecounter"
+                        ></p>
+                      </div>
+                  </div>
+                  
+                  {% comment %} <canvas id="problemsChart2" width="20" height="20"></canvas> {% endcomment %}
+              </div>
+              <h1>To be displayed soon</h1>
             </div>
           </div>
         </div>
@@ -487,7 +560,6 @@
       <!-- End Contact Section -->
     </main>
     <!-- End #main -->
-
     <!-- ======= Footer ======= -->
     <footer>
       <div class="container">
@@ -531,5 +603,6 @@
 
     <!-- Template Main JS File -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/chart.js' %}"></script>
   </body>
 </html>
