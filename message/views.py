@@ -23,6 +23,9 @@ def send_data(url):
 
 def show(request):
     data1 = send_data('https://leetcode-stats-api.herokuapp.com/Shashank_1203')
+    
+    if data1 is None:
+        return render(request,'error.html')
     leetcode_data = {
             'totalSolved' : data1.get('totalSolved'),
             'easySolved': data1.get('easySolved'), 
@@ -34,6 +37,9 @@ def show(request):
         }
     # print(leetcode_data)
     data2 = send_data("https://api.github.com/users/Shashank12-03")
+    if data2 is None:
+        return render(request,'error.html')
+    
     github_data = {
                 'public_repos': data2.get('public_repos'),
                 'public_gists': data2.get('public_gists'),
